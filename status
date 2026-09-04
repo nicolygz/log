@@ -1,0 +1,11 @@
+#!/bin/bash
+
+log=/var/log/syslog
+[ -f "$log" ] || log=./syslog.sample
+
+grep -E "systemd\[1\]: (Started|Stopped)" "$log" | while read -r l; do
+  d=$(echo "$l" | awk '{print $1,$2,$3}')
+  acao=$(echo "$l" | grep -oP "(Started|Stopped)")
+  servico=$(echo "$l" | grep -oP "(Started|Stopped) \K[^-]+" | sed 's/ *$//')
+  echo "$d | $acao | $servico"
+done

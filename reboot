@@ -1,0 +1,6 @@
+#!/bin/bash
+
+log=/var/log/syslog
+[ -f "$log" ] || log=./syslog.sample
+
+grep -E "Reboot requested|System is rebooting|System is powering down|Shutting down" "$log" | sed -E 's/^([A-Za-z]+ +[0-9]+ [0-9:]+) [^ ]+ /\1 - /'
